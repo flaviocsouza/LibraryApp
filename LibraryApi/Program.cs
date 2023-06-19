@@ -1,31 +1,26 @@
-using LibraryBusiness.Interface.Repository;
+using LibraryApi.Configuration;
 using LibraryData.LibraryContext;
-using LibraryData.Repository;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
-
-// Add services to the container.
+var configuration = new ConfigurationBuilder()
+    .SetBasePath(Directory.GetCurrentDirectory())
+    .AddJsonFile("appsettings.json")
+    .Build();
 
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+//builder.Services.AddDbContext<LibraryDbContext>(options =>
+//    options.UseSqlServer(configuration.GetConnectionString("LibraryConnectionString")));
+
+builder.Services.RepositoryInjectionConfig();
+
+
 var app = builder.Build();
 
-//builder.Services.AddDbContext<LibraryDbContext>(options =>
-//    options.UseSqlServer(app.Configuration.GetConnectionString("LibraryConnectionString")));
-
-builder.Services.AddScoped<IAddressRepository, AddressRepository>();
-builder.Services.AddScoped<IAuthorRepository, AuthorRepository>();
-builder.Services.AddScoped<IBookRepository, BookRepository>();
-builder.Services.AddScoped<ILibraryRepository, LibraryRepository>();
-builder.Services.AddScoped<ILoanRepository, LoanRepository>();
-builder.Services.AddScoped<IMemberRepository, MemberRepository>();
-builder.Services.AddScoped<IPublisherRepository, PublisherRepository>();
-
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -34,9 +29,6 @@ if (app.Environment.IsDevelopment())
 
 
 app.UseHttpsRedirection();
-
 app.UseAuthorization();
-
 app.MapControllers();
-
 app.Run();
