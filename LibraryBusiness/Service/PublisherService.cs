@@ -1,4 +1,5 @@
 ﻿
+using LibraryBusiness.Interface.Notificator;
 using LibraryBusiness.Interface.Service;
 using LibraryBusiness.Model;
 using System;
@@ -11,6 +12,10 @@ namespace LibraryBusiness.Service
 {
     public class PublisherService : BaseService, IPublisherService
     {
+        public PublisherService(INotificator notificator) : base(notificator)
+        {
+        }
+
         public Task Delete(Guid id)
         {
             throw new NotImplementedException();

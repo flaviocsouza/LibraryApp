@@ -13,11 +13,12 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
-//builder.Services.AddDbContext<LibraryDbContext>(options =>
-//    options.UseSqlServer(configuration.GetConnectionString("LibraryConnectionString")));
+builder.Services.AddDbContext<LibraryDbContext>(options =>
+    options.UseSqlServer(configuration.GetConnectionString("LibraryConnectionString")));
 
 builder.Services.RepositoryInjectionConfig();
-
+builder.Services.ServiceInjectionConfig();
+builder.Services.NotificationInjectionConfig();
 
 var app = builder.Build();
 

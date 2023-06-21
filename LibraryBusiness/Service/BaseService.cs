@@ -1,6 +1,8 @@
 ﻿using FluentValidation;
 using FluentValidation.Results;
+using LibraryBusiness.Interface.Notificator;
 using LibraryBusiness.Model;
+using LibraryBusiness.Notificator;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,10 +14,14 @@ namespace LibraryBusiness.Service
 {
     public abstract class BaseService
     {
+        private readonly INotificator _notificator;
+        public BaseService(INotificator notificator)
+        {
+            _notificator = notificator;
+        }
         protected void Notificate(string errorMessage)
         {
-            //TODO: Take the error message to the presentation layer
-            return;
+            _notificator.HandleNotification(new Notification(errorMessage));
         }
 
         protected void Notificate(ValidationResult result)
@@ -32,6 +38,7 @@ namespace LibraryBusiness.Service
             var result =  validator.Validate(entity);
             
             if (result.IsValid) return true;
+
             Notificate(result);
             return false;
 

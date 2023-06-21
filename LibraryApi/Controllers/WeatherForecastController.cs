@@ -1,10 +1,14 @@
+using LibraryBusiness.Interface.Notificator;
+using LibraryBusiness.Interface.Service;
+using LibraryBusiness.Model;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Http;
 
 namespace LibraryApi.Controllers;
 
 [ApiController]
 [Route("[controller]")]
-public class WeatherForecastController : ControllerBase
+public class WeatherForecastController : LibraryBaseController
 {
     private static readonly string[] Summaries = new[]
     {
@@ -12,21 +16,25 @@ public class WeatherForecastController : ControllerBase
     };
 
     private readonly ILogger<WeatherForecastController> _logger;
+    private readonly IBookService _bookService;
 
-    public WeatherForecastController(ILogger<WeatherForecastController> logger)
+    public WeatherForecastController(
+        ILogger<WeatherForecastController> logger,
+        INotificator notificator,
+        IBookService bookService
+    ) : base(notificator)
     {
         _logger = logger;
+        _bookService = bookService;
     }
 
     [HttpGet(Name = "GetWeatherForecast")]
-    public IEnumerable<WeatherForecast> Get()
+    public async Task<IActionResult> Get()
     {
-        return Enumerable.Range(1, 5).Select(index => new WeatherForecast
-        {
-            Date = DateTime.Now.AddDays(index),
-            TemperatureC = Random.Shared.Next(-20, 55),
-            Summary = Summaries[Random.Shared.Next(Summaries.Length)]
-        })
-        .ToArray();
+        await _bookService.RegisterBook(new Book());
+
+        if (IsValid()) return Ok("O Modelo está valido");
+        return Ok(GetNotifications());
+
     }
 }

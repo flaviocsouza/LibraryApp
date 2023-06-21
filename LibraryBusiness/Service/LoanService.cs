@@ -1,4 +1,6 @@
-﻿using LibraryBusiness.Interface.Repository;
+﻿using LibraryBusiness.Interface.Notificator;
+using LibraryBusiness.Interface.Repository;
+using LibraryBusiness.Interface.Service;
 using LibraryBusiness.Model;
 using System;
 using System.Collections.Generic;
@@ -8,39 +10,23 @@ using System.Threading.Tasks;
 
 namespace LibraryBusiness.Service
 {
-    public class LoanService : BaseService, ILoanRepository
+    public class LoanService : BaseService, ILoanService
     {
+        public LoanService(INotificator notificator) : base(notificator)
+        {
+        }
+
         public Task Delete(Guid id)
         {
             throw new NotImplementedException();
         }
 
-        public void Dispose()
+        public Task Insert(Loan loan)
         {
             throw new NotImplementedException();
         }
 
-        public Task<IEnumerable<Loan>> GetAll()
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<Loan?> GetById(Guid id)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task Insert(Loan entity)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<int> SaveChanges()
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task Update(Loan entity)
+        public Task Update(Loan loan)
         {
             throw new NotImplementedException();
         }

@@ -9,8 +9,8 @@ namespace LibraryBusiness.Interface.Service
 {
     public interface IBookService
     {
-        Task Insert(Book book);
-        Task Update(Book book);
+        Task RegisterBook(Book book);
+        Task UpdateBook(Book book);
         Task Delete(Guid id);
     }
 }
