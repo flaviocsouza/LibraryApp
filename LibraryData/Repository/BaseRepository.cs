@@ -38,14 +38,17 @@ namespace LibraryData.Repository
 
         public virtual async Task Insert(Entity entity)
         {
+            entity.CreateDate = DateTime.Now;
+            entity.UpdateDate = DateTime.Now;
             _dbSet.Add(entity);
             await SaveChanges();
         }
 
         public virtual async Task Update(Entity entity)
         {
+            entity.UpdateDate = DateTime.Now;
            _dbSet.Update(entity);
-            await SaveChanges();         
+            await SaveChanges();
         }
 
         public virtual async Task Delete(Guid id)

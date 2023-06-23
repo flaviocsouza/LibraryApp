@@ -19,6 +19,12 @@ namespace LibraryData.Configuration
 
             builder.Ignore(m => m.IsActive);
 
+            builder.Property(a => a.CreateDate)
+                .HasDefaultValueSql("getdate()");
+
+            builder.Property(a => a.UpdateDate)
+                .HasDefaultValueSql("getdate()");
+
             builder.Property(m => m.Name)
                 .HasColumnType("varchar(120)");
         }
