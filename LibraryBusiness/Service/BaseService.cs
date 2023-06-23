@@ -14,7 +14,7 @@ namespace LibraryBusiness.Service
 {
     public abstract class BaseService
     {
-        protected readonly INotificator _notificator;
+        private readonly INotificator _notificator;
         public BaseService(INotificator notificator)
         {
             _notificator = notificator;

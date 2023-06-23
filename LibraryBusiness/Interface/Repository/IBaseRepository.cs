@@ -17,7 +17,5 @@ namespace LibraryBusiness.Interface.Repository
         Task Update (Entity entity);
         Task Delete (Guid id);
         Task<int> SaveChanges();
-
-
     }
 }
