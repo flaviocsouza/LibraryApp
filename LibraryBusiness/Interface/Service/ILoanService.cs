@@ -9,9 +9,8 @@ namespace LibraryBusiness.Interface.Service
 {
     public interface ILoanService
     {
-
-        Task Insert(Loan loan);
-        Task Update(Loan loan);
-        Task Delete(Guid id);
+        Task<decimal?> ComputeLateFee(Guid loanId);
+        Task RenewLoan(Guid loanId);
+        Task ReturnBook(Guid loanId);
     }
 }

@@ -9,5 +9,6 @@ namespace LibraryBusiness.Interface.Repository
 {
     public interface ILoanRepository : IBaseRepository<Loan>
     {
+        public Task<bool> MemberHasActiveLoans(Guid memberId);
     }
 }

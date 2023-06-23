@@ -14,7 +14,7 @@ namespace LibraryBusiness.Service
 {
     public abstract class BaseService
     {
-        private readonly INotificator _notificator;
+        protected readonly INotificator _notificator;
         public BaseService(INotificator notificator)
         {
             _notificator = notificator;
@@ -28,7 +28,6 @@ namespace LibraryBusiness.Service
         {
             foreach(var error in result.Errors)
                 Notificate(error.ErrorMessage);
-
         }
 
         protected bool ExecuteValidation<TValidador, TEntity>(TValidador validator, TEntity entity)
@@ -42,6 +41,19 @@ namespace LibraryBusiness.Service
             Notificate(result);
             return false;
 
+        }
+
+        protected bool IsValid()
+        {
+            return !_notificator.HasNotification();
+        }
+
+        protected bool CheckExists<TEntity>(TEntity entity)
+            where TEntity : BaseModel
+        {
+            if (entity is not null) return true;
+            Notificate(string.Format("{0} Not Found", typeof(TEntity).Name));
+            return false; 
         }
     }
 }

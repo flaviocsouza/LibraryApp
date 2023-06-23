@@ -1,7 +1,9 @@
 ﻿
 using LibraryBusiness.Interface.Notificator;
+using LibraryBusiness.Interface.Repository;
 using LibraryBusiness.Interface.Service;
 using LibraryBusiness.Model;
+using LibraryBusiness.Validator;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,23 +14,32 @@ namespace LibraryBusiness.Service
 {
     public class PublisherService : BaseService, IPublisherService
     {
-        public PublisherService(INotificator notificator) : base(notificator)
+        private readonly IPublisherRepository _publisherRepository;
+
+        public PublisherService(INotificator notificator,
+            IPublisherRepository publisherRepository) : base(notificator)
         {
+            _publisherRepository = publisherRepository;
         }
 
-        public Task Delete(Guid id)
+        public async Task Insert(Publisher publisher)
         {
-            throw new NotImplementedException();
+            if (!ExecuteValidation(new PublisherValidator(), publisher)
+                || !ExecuteValidation(new AddressValidator(), publisher.Address)) return;
+
+            await _publisherRepository.Insert(publisher);
         }
 
-        public Task Insert(Publisher publisher)
+        public async Task Update(Publisher publisher)
         {
-            throw new NotImplementedException();
-        }
+            if (!ExecuteValidation(new PublisherValidator(), publisher)
+                || !ExecuteValidation(new AddressValidator(), publisher.Address)) return;
 
-        public Task Update(Publisher publisher)
+            await _publisherRepository.Update(publisher);
+        }
+        public async Task Delete(Guid id)
         {
-            throw new NotImplementedException();
+            await _publisherRepository.Delete(id);
         }
     }
 }
