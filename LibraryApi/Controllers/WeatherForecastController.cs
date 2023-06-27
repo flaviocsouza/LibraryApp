@@ -6,7 +6,6 @@ using Microsoft.AspNetCore.Http;
 
 namespace LibraryApi.Controllers;
 
-[ApiController]
 [Route("[controller]")]
 public class WeatherForecastController : LibraryBaseController
 {

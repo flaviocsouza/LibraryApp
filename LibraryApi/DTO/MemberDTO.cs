@@ -2,16 +2,16 @@
 using System.Collections;
 using System.ComponentModel.DataAnnotations;
 
-namespace LibraryApi.ViewModel
+namespace LibraryApi.DTO
 {
-    public class MemberViewModel
+    public class MemberDTO
     {
         [Key]
         public Guid Id { get; set; }
         public string Name { get; set; }
 
         public Guid AddressId { get; set; }
-        public AddressViewModel Address { get; set; }
-        public IEnumerable<LoanViewModel> LoanHistory { get; set; }
+        public AddressDTO Address { get; set; }
+        public IEnumerable<LoanDTO> LoanHistory { get; set; }
     }
 }

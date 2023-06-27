@@ -5,16 +5,16 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace LibraryApi.ViewModel
+namespace LibraryApi.DTO
 {
-    public class AuthorViewModel
+    public class AuthorDTO
     {
         [Key]
         public Guid Id { get; set; }
         public string Name { get; set; }     
         public string Nationality { get; set; }
 
-        public IEnumerable<BookViewModel> PublishedBooks { get; set; }
+        public IEnumerable<BookDTO> PublishedBooks { get; set; }
     }
 
 }

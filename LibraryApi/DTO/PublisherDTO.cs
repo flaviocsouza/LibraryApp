@@ -5,17 +5,17 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace LibraryApi.ViewModel
+namespace LibraryApi.DTO
 {
-    public class PublisherViewModel
+    public class PublisherDTO
     {
         [Key]
         public Guid Id { get; set; }
         public Guid AddressId { get; set; }
         public string Name { get; set; }
 
-        public AddressViewModel Address { get; set; }
-        public IEnumerable<BookViewModel> PublishedBooks { get; set; }
+        public AddressDTO Address { get; set; }
+        public IEnumerable<BookDTO> PublishedBooks { get; set; }
     }
 
 }

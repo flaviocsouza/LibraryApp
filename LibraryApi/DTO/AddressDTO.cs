@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace LibraryApi.ViewModel
+namespace LibraryApi.DTO
 {
-    public class AddressViewModel
+    public class AddressDTO
     {
         [Key]
         public Guid Id { get; set; }
@@ -16,9 +16,9 @@ namespace LibraryApi.ViewModel
         public Guid? LibraryId { get; set; }
         public Guid? PublisherId { get; set; }
 
-        public MemberViewModel Member { get; set; }
-        public LibraryViewModel Library { get; set; }
-        public PublisherViewModel Publisher { get; set; }
+        public MemberDTO Member { get; set; }
+        public LibraryDTO Library { get; set; }
+        public PublisherDTO Publisher { get; set; }
     }
 
 }

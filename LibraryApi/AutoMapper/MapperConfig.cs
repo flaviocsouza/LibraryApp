@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using LibraryApi.ViewModel;
+using LibraryApi.DTO;
 using LibraryBusiness.Model;
 
 namespace LibraryApi.AutoMapper
@@ -9,13 +9,13 @@ namespace LibraryApi.AutoMapper
 
         public MapperConfig()
         {
-            CreateMap<Address, AddressViewModel>().ReverseMap();
-            CreateMap<Author, AuthorViewModel>().ReverseMap();
-            CreateMap<Book, BookViewModel>().ReverseMap();
-            CreateMap<Library, LibraryViewModel>().ReverseMap();
-            CreateMap<Loan, LoanViewModel>().ReverseMap();
-            CreateMap<Member, MemberViewModel>().ReverseMap();
-            CreateMap<Publisher, PublisherViewModel>().ReverseMap();
+            CreateMap<Address, AddressDTO>().ReverseMap();
+            CreateMap<Author, AuthorDTO>().ReverseMap();
+            CreateMap<Book, BookDTO>().ReverseMap();
+            CreateMap<Library, LibraryDTO>().ReverseMap();
+            CreateMap<Loan, LoanDTO>().ReverseMap();
+            CreateMap<Member, MemberDTO>().ReverseMap();
+            CreateMap<Publisher, PublisherDTO>().ReverseMap();
         }
     }
 }

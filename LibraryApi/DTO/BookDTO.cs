@@ -1,10 +1,10 @@
 using System.Collections;
 using System.ComponentModel.DataAnnotations;
 
-namespace LibraryApi.ViewModel
+namespace LibraryApi.DTO
 {
 
-    public class BookViewModel
+    public class BookDTO
     {
         [Key]
         public Guid Id { get; set; }
@@ -13,9 +13,9 @@ namespace LibraryApi.ViewModel
         public Guid AuthorId { get; set; }
         public Guid PublisherId { get; set; }
 
-        public AuthorViewModel Author { get; set; }
-        public PublisherViewModel Publisher { get; set; }
-        public IEnumerable<LoanViewModel> LoanHistory { get; set; }
+        public AuthorDTO Author { get; set; }
+        public PublisherDTO Publisher { get; set; }
+        public IEnumerable<LoanDTO> LoanHistory { get; set; }
 
     }
 

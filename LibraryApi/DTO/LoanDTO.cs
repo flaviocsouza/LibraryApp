@@ -1,9 +1,9 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace LibraryApi.ViewModel
+namespace LibraryApi.DTO
 {
-    public class LoanViewModel
+    public class LoanDTO
     {
         [Key]
         public Guid Id { get; set; }
@@ -15,8 +15,8 @@ namespace LibraryApi.ViewModel
         public Guid MemberId { get; set; }
 
 
-        public BookViewModel Book { get; set; }
-        public MemberViewModel Member { get; set; }
+        public BookDTO Book { get; set; }
+        public MemberDTO Member { get; set; }
 
     }
 }
