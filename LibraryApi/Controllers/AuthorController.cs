@@ -45,6 +45,7 @@ namespace LibraryApi.Controllers
         [HttpPost]
         public async Task<ActionResult<AuthorDTO>> InsertAuthor(AuthorDTO authorDTO)
         {
+            if (!ModelState.IsValid) CustomResult(ModelState);
             await _authorService.Insert(_mapper.Map<Author>(authorDTO));
             return CustomResult(authorDTO);
         }
@@ -52,6 +53,7 @@ namespace LibraryApi.Controllers
         [HttpPut("{authorId:Guid}")]
         public async Task<ActionResult<AuthorDTO>> UpdateAuthor(Guid authorId, AuthorDTO authorDTO)
         {
+            if (!ModelState.IsValid) CustomResult(ModelState);
             if (authorId != authorDTO.Id) return BadRequest();
             if(_authorRepository.GetById(authorId).Result is null) return NotFound();
 

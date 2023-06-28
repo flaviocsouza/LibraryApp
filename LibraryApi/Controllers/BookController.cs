@@ -45,6 +45,7 @@ namespace LibraryApi.Controllers
         [HttpPost]
         public async Task<ActionResult<BookDTO>> RegisterBook(BookDTO bookDTO)
         {
+            if (!ModelState.IsValid) CustomResult(ModelState);
             await _bookService.RegisterBook(_mapper.Map<Book>(bookDTO));
             return CustomResult(bookDTO);
         }
@@ -52,6 +53,7 @@ namespace LibraryApi.Controllers
         [HttpPut("{bookId:Guid}")]
         public async Task<ActionResult<BookDTO>> UpdateBook(Guid bookId, BookDTO bookDTO)
         {
+            if (!ModelState.IsValid) CustomResult(ModelState);
             if (bookId != bookDTO.Id) return BadRequest();
             if (_bookRepository.GetById(bookId).Result is null) return NotFound();
 

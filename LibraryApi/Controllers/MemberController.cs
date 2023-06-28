@@ -43,6 +43,7 @@ namespace LibraryApi.Controllers
         [HttpPost]
         public async Task<ActionResult<MemberDTO>> RegisterMember(MemberDTO memberDTO)
         {
+            if (!ModelState.IsValid) CustomResult(ModelState);
             await _memberService.Insert(_mapper.Map<Member>(memberDTO));
             return CustomResult(memberDTO);
         }
@@ -50,7 +51,8 @@ namespace LibraryApi.Controllers
         [HttpPut("{memberId:Guid}")]
         public async Task<ActionResult<MemberDTO>> UpdateMember(Guid memberId, MemberDTO memberDTO)
         {
-            if(memberId != memberDTO.Id) return BadRequest();
+            if (!ModelState.IsValid) CustomResult(ModelState);
+            if (memberId != memberDTO.Id) return BadRequest();
             if (_memberRepository.GetById(memberId).Result is null) return NotFound();
 
             await _memberService.Update(_mapper.Map<Member>(memberDTO));

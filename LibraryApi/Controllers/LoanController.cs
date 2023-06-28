@@ -43,6 +43,7 @@ namespace LibraryApi.Controllers
         [HttpPost("Lend-Book")]
         public async Task<ActionResult> LendBook(LendBookRequest requestParams)
         {
+            if (!ModelState.IsValid) CustomResult(ModelState);
             await _loanService.LendBook(requestParams.MemberId, requestParams.BookId);
             return CustomResult();
         }

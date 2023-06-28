@@ -1,5 +1,6 @@
 using LibraryApi.Configuration;
 using LibraryData.LibraryContext;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -15,6 +16,8 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.AddDbContext<LibraryDbContext>(options =>
     options.UseSqlServer(configuration.GetConnectionString("LibraryConnectionString")));
+
+builder.Services.Configure<ApiBehaviorOptions>(options => options.SuppressModelStateInvalidFilter = true);
 
 builder.Services.RepositoryInjectionConfig();
 builder.Services.ServiceInjectionConfig();

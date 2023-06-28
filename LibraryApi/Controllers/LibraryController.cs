@@ -43,6 +43,7 @@ namespace LibraryApi.Controllers
         [HttpPost]
         public async Task<ActionResult<LibraryDTO>> InsertLibrary(LibraryDTO libraryDTO)
         {
+            if (!ModelState.IsValid) CustomResult(ModelState);
             await _libraryService.Insert(_mapper.Map<Library>(libraryDTO));
             return CustomResult(libraryDTO);
         }
@@ -50,7 +51,8 @@ namespace LibraryApi.Controllers
         [HttpPut("{libraryId:Guid}")]
         public async Task<ActionResult<LibraryDTO>> UpdateLibrary(Guid libraryId, LibraryDTO libraryDTO)
         {
-            if(libraryId != libraryDTO.Id) return BadRequest();
+            if (!ModelState.IsValid) CustomResult(ModelState);
+            if (libraryId != libraryDTO.Id) return BadRequest();
             if(_libraryRepository.GetById(libraryId).Result is null) return NotFound();
 
             await _libraryService.Update(_mapper.Map<Library>(libraryDTO));
