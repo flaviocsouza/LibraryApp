@@ -6,11 +6,11 @@ using Microsoft.AspNetCore.Mvc;
 namespace LibraryApi.Controllers
 {
     [ApiController]
-    public abstract class LibraryBaseController : ControllerBase
+    public abstract class MainController : ControllerBase
     {
         private INotificator _notificator;
 
-        public LibraryBaseController(INotificator notificator)
+        public MainController(INotificator notificator)
         {
             _notificator = notificator;
         }

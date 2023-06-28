@@ -19,6 +19,7 @@ builder.Services.AddDbContext<LibraryDbContext>(options =>
 builder.Services.RepositoryInjectionConfig();
 builder.Services.ServiceInjectionConfig();
 builder.Services.NotificationInjectionConfig();
+builder.Services.OtherInjectionConfig();
 
 var app = builder.Build();
 

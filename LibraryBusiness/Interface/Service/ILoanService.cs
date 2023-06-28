@@ -12,5 +12,6 @@ namespace LibraryBusiness.Interface.Service
         Task<decimal?> ComputeLateFee(Guid loanId);
         Task RenewLoan(Guid loanId);
         Task ReturnBook(Guid loanId);
+        Task LendBook(Guid memberId, Guid bookId);
     }
 }
