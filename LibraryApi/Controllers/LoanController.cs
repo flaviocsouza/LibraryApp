@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using LibraryApi.DTO;
-using LibraryApi.RequestParameters;
 using LibraryBusiness.Interface.Notificator;
 using LibraryBusiness.Interface.Repository;
 using LibraryBusiness.Interface.Service;
@@ -41,10 +40,10 @@ namespace LibraryApi.Controllers
         }
 
         [HttpPost("Lend-Book")]
-        public async Task<ActionResult> LendBook(LendBookRequest requestParams)
+        public async Task<ActionResult> LendBook(LoanDTO loanDTO)
         {
             if (!ModelState.IsValid) CustomResult(ModelState);
-            await _loanService.LendBook(requestParams.MemberId, requestParams.BookId);
+            await _loanService.LendBook(loanDTO.MemberId, loanDTO.BookId);
             return CustomResult();
         }
 
