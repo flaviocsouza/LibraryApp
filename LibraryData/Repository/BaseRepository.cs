@@ -22,17 +22,17 @@ namespace LibraryData.Repository
         }
         public virtual async Task<IEnumerable<Entity>> GetAll()
         {
-            return await _dbSet.AsNoTracking().Where(e => e.IsActive).ToListAsync();
+            return await _dbSet.AsNoTracking().Where(e => e.DeleteDate == null).ToListAsync();
         }
 
 
         public virtual async Task<Entity?> GetById(Guid id)
         {
-            return await _dbSet.AsNoTracking().FirstOrDefaultAsync(e => e.Id == id && e.IsActive);
+            return await _dbSet.AsNoTracking().FirstOrDefaultAsync(e => e.Id == id && e.DeleteDate == null);
         }
         public async Task<IEnumerable<Entity>> Find(Expression<Func<Entity, bool>> query) 
         {
-            return await _dbSet.AsNoTracking().Where(e => e.IsActive).Where(query).ToListAsync();
+            return await _dbSet.AsNoTracking().Where(e => e.DeleteDate == null).Where(query).ToListAsync();
         
         }
 

@@ -24,16 +24,16 @@ namespace LibraryBusiness.Service
 
         public async Task Insert(Publisher publisher)
         {
-            if (!ExecuteValidation(new PublisherValidator(), publisher)
-                || !ExecuteValidation(new AddressValidator(), publisher.Address)) return;
+            if (!ExecuteValidation(new PublisherValidator(), publisher) ||
+                !ExecuteValidation(new AddressValidator(), publisher.Address)) return;
 
             await _publisherRepository.Insert(publisher);
         }
 
         public async Task Update(Publisher publisher)
         {
-            if (!ExecuteValidation(new PublisherValidator(), publisher)
-                || !ExecuteValidation(new AddressValidator(), publisher.Address)) return;
+            if (!ExecuteValidation(new PublisherValidator(), publisher) ||
+                !ExecuteValidation(new AddressValidator(), publisher.Address)) return;
 
             await _publisherRepository.Update(publisher);
         }

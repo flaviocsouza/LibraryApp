@@ -31,7 +31,7 @@ namespace LibraryBusiness.Service
             if(!ExecuteValidation(new AuthorValidator(), author)) return;
             
             var hasSameName = await _authorRepository.Find(a =>
-             string.Equals(a.Name, author.Name, StringComparison.OrdinalIgnoreCase));
+             string.Equals(a.Name, author.Name));
 
             if (hasSameName.Any()) Notificate("There is already an Author registered with that name");
             else  await _authorRepository.Insert(author);
@@ -42,7 +42,7 @@ namespace LibraryBusiness.Service
             if (!ExecuteValidation(new AuthorValidator(), author)) return;
 
             var hasSameName = await _authorRepository.Find(a =>
-             string.Equals(a.Name, author.Name, StringComparison.OrdinalIgnoreCase) && author.Id != a.Id);
+             string.Equals(a.Name, author.Name) && author.Id != a.Id);
 
             if (hasSameName.Any()) Notificate("There is already an Author registered with that name");
 

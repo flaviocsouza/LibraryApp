@@ -27,8 +27,8 @@ namespace LibraryBusiness.Service
 
         public async Task Insert(Member member)
         {
-            if (!ExecuteValidation(new MemberValidator(), member)
-                || !ExecuteValidation(new AddressValidator(), member.Address)) return; 
+            if (!ExecuteValidation(new MemberValidator(), member) ||
+                !ExecuteValidation(new AddressValidator(), member.Address)) return; 
 
             if((await _memberRepository.Find(m => m.Document == member.Document)).Any())
             {
@@ -42,8 +42,8 @@ namespace LibraryBusiness.Service
 
         public async Task Update(Member member)
         {
-            if (!ExecuteValidation(new MemberValidator(), member)
-                || !ExecuteValidation(new AddressValidator(), member.Address)) return;
+            if (!ExecuteValidation(new MemberValidator(), member) ||
+                !ExecuteValidation(new AddressValidator(), member.Address)) return;
 
             if ((await _memberRepository.Find(m => m.Document == member.Document && m.Id != member.Id)).Any())
             {

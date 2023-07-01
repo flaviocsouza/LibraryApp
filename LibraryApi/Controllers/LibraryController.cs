@@ -35,7 +35,7 @@ namespace LibraryApi.Controllers
         [HttpGet("{libraryId:Guid}")]
         public async Task<ActionResult<LibraryDTO>> GetLibraryByID(Guid libraryId)
         {
-            var library = _libraryRepository.GetById(libraryId);
+            var library = await _libraryRepository.GetById(libraryId);
             if (library is null) return NotFound();
             return CustomResult(_mapper.Map<LibraryDTO>(library));
         }

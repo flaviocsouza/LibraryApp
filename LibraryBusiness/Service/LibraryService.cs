@@ -22,8 +22,7 @@ namespace LibraryBusiness.Service
 
         public async Task Insert(Library library)
         {
-            if (ExecuteValidation(new LibraryValidator(), library) ||
-                ExecuteValidation(new AddressValidator(), library.Address)) return;
+            if (!ExecuteValidation(new LibraryValidator(), library)) return;
 
             await _libraryRepository.Insert(library);
 
@@ -32,8 +31,7 @@ namespace LibraryBusiness.Service
         public async Task Update(Library library)
         {
 
-            if (ExecuteValidation(new LibraryValidator(), library) ||
-                ExecuteValidation(new AddressValidator(), library.Address)) return;
+            if (!ExecuteValidation(new LibraryValidator(), library)) return;
 
             await _libraryRepository.Update(library);
         }
