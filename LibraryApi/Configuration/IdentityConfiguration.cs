@@ -16,15 +16,15 @@ namespace LibraryApi.Configuration
             services.AddDbContext<UserDbContext>(options =>
                 options.UseSqlServer(configuration.GetConnectionString("LibraryConnectionString")));
 
-            //services.AddDefaultIdentity<IdentityRole>();
+            services.AddIdentityCore<IdentityUser>();
 
-            //services.AddDefaultIdentity<IdentityRole>( options =>
-            //{
-            //    options.
-            //});
-
+            services.AddIdentity<IdentityUser, IdentityRole>()
+                .AddRoles<IdentityRole>()
+                .AddEntityFrameworkStores<UserDbContext>()
+                .AddDefaultTokenProviders();
 
             return services;
         }
     }
+
 }

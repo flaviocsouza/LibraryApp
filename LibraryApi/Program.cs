@@ -23,6 +23,7 @@ builder.Services.RepositoryInjectionConfig();
 builder.Services.ServiceInjectionConfig();
 builder.Services.NotificationInjectionConfig();
 builder.Services.OtherInjectionConfig();
+builder.Services.IdentityConfig();
 
 var app = builder.Build();
 
@@ -34,6 +35,7 @@ if (app.Environment.IsDevelopment())
 
 
 app.UseHttpsRedirection();
+app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
 app.Run();
