@@ -31,9 +31,11 @@ namespace LibraryBusiness.Service
 
         public async Task RegisterBook(Book book)
         {
-            if (!ExecuteValidation(new BookValidator(), book) ||
-                !ExecuteValidation(new AuthorValidator(), book.Author) ||
-                !ExecuteValidation(new PublisherValidator(), book.Publisher)) return;
+            var valid = true;
+            if (!ExecuteValidation(new BookValidator(), book)) valid = false;
+            if (book.Author is not null && !ExecuteValidation(new AuthorValidator(), book.Author)) valid = false; 
+            if (book.Publisher is not null && !ExecuteValidation(new PublisherValidator(), book.Publisher)) valid = false;
+            if (!valid) return;
 
             await InsertOrUpdateAuthor(book.Author);
             await InsertOrUpdatePublisher(book.Publisher);
@@ -44,10 +46,11 @@ namespace LibraryBusiness.Service
 
         public async Task UpdateBook(Book book)
         {
-
-            if (!ExecuteValidation(new BookValidator(), book) ||
-                !ExecuteValidation(new AuthorValidator(), book.Author) ||
-                !ExecuteValidation(new PublisherValidator(), book.Publisher)) return;
+            var valid = true;
+            if (!ExecuteValidation(new BookValidator(), book)) valid = false; 
+            if (book.Author is not null && !ExecuteValidation(new AuthorValidator(), book.Author)) valid = false; 
+            if (book.Publisher is not null && !ExecuteValidation(new PublisherValidator(), book.Publisher)) valid = false;
+            if (!valid) return;
 
             var bookToUpdate = await _bookRepository.GetById(book.Id);
             
@@ -73,18 +76,22 @@ namespace LibraryBusiness.Service
 
         private async Task InsertOrUpdateAuthor(Author author)
         {
+            if (author is null) return;
             var RegisteredAuthor = await _authorRepository.Find(a =>
              string.Equals(a.Name, author.Name, StringComparison.OrdinalIgnoreCase));
 
-            if (RegisteredAuthor != null) await _authorRepository.Insert(author);
+            if (RegisteredAuthor is null) await _authorRepository.Insert(author);
+            await _authorRepository.Update(author);
         }
 
         private async Task InsertOrUpdatePublisher(Publisher publisher)
         {
+            if (publisher is null) return;
             var RegisteredPublisher = await _publisherRepository.Find(p =>
             string.Equals(p.Name, publisher.Name, StringComparison.OrdinalIgnoreCase));
 
-            if (RegisteredPublisher != null) await _publisherRepository.Insert(publisher);
+            if (RegisteredPublisher is null) await _publisherRepository.Insert(publisher);
+            await _publisherRepository.Update(publisher);
         }
 
     }
