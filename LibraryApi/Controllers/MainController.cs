@@ -43,7 +43,7 @@ namespace LibraryApi.Controllers
          
         }
 
-        private void Notificate(string errorMessage)
+        protected void Notificate(string errorMessage)
         {
             _notificator.HandleNotification(new Notification(errorMessage));
         }
