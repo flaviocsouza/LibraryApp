@@ -42,10 +42,36 @@ namespace LibraryApi.Configuration
     {
         public static IServiceCollection AddSwaggerConfiguration(this IServiceCollection services)
         {
-            services.AddSwaggerGen(opt => {
+            services.AddSwaggerGen(opt =>
+            {
                 opt.OperationFilter<SwaggerDefaultValues>();
-            });
 
+                opt.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+                {
+                    Name = "Authorization",
+                    Description = "JWT Authorization 'Bearer' [space] and then your token",
+                    In = ParameterLocation.Header,
+                    Type = SecuritySchemeType.ApiKey,
+                    Scheme = "Bearer"
+
+                });
+
+                var security = new OpenApiSecurityRequirement
+                {
+                    {
+                        new OpenApiSecurityScheme
+                        {
+                            Reference  = new OpenApiReference() { Type = ReferenceType.SecurityScheme, Id = "Bearer" },
+                            Scheme = "oauth2",
+                            Name = "Bearer",
+                            In = ParameterLocation.Header
+                        },
+                        new List<string>()
+                    }
+                };
+
+                opt.AddSecurityRequirement(security);
+            });
             return services;
         }
 
