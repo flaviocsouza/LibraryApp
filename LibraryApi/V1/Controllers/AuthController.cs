@@ -1,6 +1,8 @@
 ﻿using LibraryApi.Configuration;
+using LibraryApi.Controllers;
 using LibraryApi.DTO;
 using LibraryBusiness.Interface.Notificator;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
@@ -9,9 +11,11 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 
-namespace LibraryApi.Controllers
+namespace LibraryApi.V1.Controllers
 {
-    [Route("api/")]
+    [AllowAnonymous]
+    [ApiVersion("1.0")]
+    [Route("api/{Version:apiVersion}/User")]
     public class AuthController : MainController
     {
         private readonly UserManager<IdentityUser> _userManager;
@@ -32,7 +36,7 @@ namespace LibraryApi.Controllers
         [HttpPost("Register")]
         public async Task<ActionResult> Register(RegisterUserDTO registerUser)
         {
-            if(!ModelState.IsValid) return CustomResult(ModelState);
+            if (!ModelState.IsValid) return CustomResult(ModelState);
 
             IdentityUser user = new IdentityUser
             {
@@ -48,7 +52,7 @@ namespace LibraryApi.Controllers
                 return CustomResult(GenerateJWT(registerUser.email));
             }
 
-            foreach(var error in result.Errors)
+            foreach (var error in result.Errors)
             {
                 Notificate(error.Description);
             }
@@ -56,7 +60,7 @@ namespace LibraryApi.Controllers
         }
 
         [HttpPost("SignIn")]
-        public async Task<ActionResult> SignIn (SignInUserDTO userDTO)
+        public async Task<ActionResult> SignIn(SignInUserDTO userDTO)
         {
             if (!ModelState.IsValid) return CustomResult(ModelState);
             var result = await _signInManager.PasswordSignInAsync(userDTO.email, userDTO.password, false, true);
@@ -93,7 +97,7 @@ namespace LibraryApi.Controllers
                 UserInfo = new UserInfoDTO
                 {
                     EMail = user.Email,
-                    Claims = claims.Claims.Select( c => new ClaimDTO{ Type = c.Type, Value = c.Value })
+                    Claims = claims.Claims.Select(c => new ClaimDTO { Type = c.Type, Value = c.Value })
                 }
             };
 
@@ -103,7 +107,7 @@ namespace LibraryApi.Controllers
         {
             var userClaims = await _userManager.GetClaimsAsync(user);
 
-            foreach( var role in await _userManager.GetRolesAsync(user))
+            foreach (var role in await _userManager.GetRolesAsync(user))
                 userClaims.Add(new Claim(ClaimTypes.Role, role));
 
             userClaims.Add(new Claim(JwtRegisteredClaimNames.Sub, user.Id));
@@ -115,7 +119,7 @@ namespace LibraryApi.Controllers
             ClaimsIdentity claimsIdentity = new ClaimsIdentity();
             claimsIdentity.AddClaims(userClaims);
             return claimsIdentity;
-            
+
         }
     }
 }

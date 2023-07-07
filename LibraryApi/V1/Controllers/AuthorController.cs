@@ -1,15 +1,18 @@
 ﻿using AutoMapper;
+using LibraryApi.Controllers;
 using LibraryApi.DTO;
 using LibraryBusiness.Interface.Notificator;
 using LibraryBusiness.Interface.Repository;
 using LibraryBusiness.Interface.Service;
 using LibraryBusiness.Model;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace LibraryApi.Controllers
+namespace LibraryApi.V1.Controllers
 {
-
-    [Route("[controller]")]
+    [Authorize]
+    [ApiVersion("1.0")]
+    [Route("api/{Version:apiVersion}/[controller]")]
     public class AuthorController : MainController
     {
         private readonly IMapper _mapper;
@@ -55,7 +58,7 @@ namespace LibraryApi.Controllers
         {
             if (!ModelState.IsValid) CustomResult(ModelState);
             if (authorId != authorDTO.Id) return BadRequest();
-            if(_authorRepository.GetById(authorId).Result is null) return NotFound();
+            if (_authorRepository.GetById(authorId).Result is null) return NotFound();
 
             await _authorService.Update(_mapper.Map<Author>(authorDTO));
             return CustomResult(authorDTO);

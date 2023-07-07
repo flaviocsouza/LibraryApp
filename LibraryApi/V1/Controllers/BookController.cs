@@ -1,15 +1,18 @@
 ﻿using AutoMapper;
+using LibraryApi.Controllers;
 using LibraryApi.DTO;
 using LibraryBusiness.Interface.Notificator;
 using LibraryBusiness.Interface.Repository;
 using LibraryBusiness.Interface.Service;
 using LibraryBusiness.Model;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace LibraryApi.Controllers
+namespace LibraryApi.V1.Controllers
 {
-
-    [Route("[controller]")]
+    [Authorize]
+    [ApiVersion("1.0")]
+    [Route("api/{Version:apiVersion}/[controller]")]
     public class BookController : MainController
     {
         private readonly IBookRepository _bookRepository;
@@ -31,7 +34,7 @@ namespace LibraryApi.Controllers
         [HttpGet]
         public async Task<IEnumerable<BookDTO>> GetAllBooks()
         {
-            return _mapper.Map<IEnumerable<BookDTO>>( await _bookRepository.GetAll());
+            return _mapper.Map<IEnumerable<BookDTO>>(await _bookRepository.GetAll());
         }
 
         [HttpGet("{bookId:Guid}")]
@@ -66,7 +69,7 @@ namespace LibraryApi.Controllers
         public async Task<ActionResult<BookDTO>> DeleteBook(Guid bookId)
         {
             var book = _bookRepository.GetById(bookId);
-            if(book is null) return NotFound();
+            if (book is null) return NotFound();
 
             await _bookService.Delete(bookId);
             return CustomResult(_mapper.Map<BookDTO>(book));

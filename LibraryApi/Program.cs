@@ -1,7 +1,10 @@
+
 using LibraryApi.Configuration;
 using LibraryData.LibraryContext;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 var configuration = new ConfigurationBuilder()
@@ -11,7 +14,28 @@ var configuration = new ConfigurationBuilder()
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerConfiguration();
+builder.Services.AddApiVersioning(opt =>
+{
+    opt.AssumeDefaultVersionWhenUnspecified = true;
+    opt.DefaultApiVersion = new ApiVersion(1, 0);
+    opt.ReportApiVersions = true;
+});
+builder.Services.AddVersionedApiExplorer(opt =>
+{
+    opt.GroupNameFormat = "'v'VVV";
+    opt.SubstituteApiVersionInUrl = true;
+});
+
+builder.Services.AddCors(opt => 
+{
+    opt.AddPolicy("Development", b => 
+    {
+        b.AllowAnyHeader();
+        b.AllowAnyMethod();
+        b.AllowAnyOrigin();
+    });
+});
 
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.AddDbContext<LibraryDbContext>(options =>
@@ -29,10 +53,10 @@ var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
+    var apiVersionDescriptionProvider = app.Services.GetRequiredService<IApiVersionDescriptionProvider>();
+    app.UseSwaggerConfiguration(apiVersionDescriptionProvider);
+    app.UseCors("Development");
 }
-
 
 app.UseHttpsRedirection();
 app.UseAuthentication();

@@ -1,14 +1,18 @@
 ﻿using AutoMapper;
+using LibraryApi.Controllers;
 using LibraryApi.DTO;
 using LibraryBusiness.Interface.Notificator;
 using LibraryBusiness.Interface.Repository;
 using LibraryBusiness.Interface.Service;
 using LibraryBusiness.Model;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace LibraryApi.Controllers
+namespace LibraryApi.V1.Controllers
 {
-    [Route("[controller]")]
+    [Authorize]
+    [ApiVersion("1.0")]
+    [Route("api/{Version:apiVersion}/[controller]")]
     public class LibraryController : MainController
     {
         private readonly IMapper _mapper;
@@ -53,7 +57,7 @@ namespace LibraryApi.Controllers
         {
             if (!ModelState.IsValid) CustomResult(ModelState);
             if (libraryId != libraryDTO.Id) return BadRequest();
-            if(_libraryRepository.GetById(libraryId).Result is null) return NotFound();
+            if (_libraryRepository.GetById(libraryId).Result is null) return NotFound();
 
             await _libraryService.Update(_mapper.Map<Library>(libraryDTO));
             return CustomResult(libraryDTO);
@@ -63,7 +67,7 @@ namespace LibraryApi.Controllers
         public async Task<ActionResult<LibraryDTO>> DeleteLibrary(Guid libraryId)
         {
             var library = await _libraryRepository.GetById(libraryId);
-            if(library is null) return NotFound();
+            if (library is null) return NotFound();
 
             await _libraryService.Delete(libraryId);
             return CustomResult(_mapper.Map<LibraryDTO>(library));

@@ -1,14 +1,18 @@
 ﻿using AutoMapper;
+using LibraryApi.Controllers;
 using LibraryApi.DTO;
 using LibraryBusiness.Interface.Notificator;
 using LibraryBusiness.Interface.Repository;
 using LibraryBusiness.Interface.Service;
 using LibraryBusiness.Model;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace LibraryApi.Controllers
+namespace LibraryApi.V1.Controllers
 {
-    [Route("[controller]")]
+    [Authorize]
+    [ApiVersion("1.0")]
+    [Route("api/{Version:apiVersion}/[controller]")]
     public class MemberController : MainController
     {
         private readonly IMapper _mapper;
@@ -17,7 +21,7 @@ namespace LibraryApi.Controllers
 
         public MemberController(INotificator notificator,
             IMapper mapper,
-            IMemberService memberService, 
+            IMemberService memberService,
             IMemberRepository memberRepository
         ) : base(notificator)
         {
@@ -29,7 +33,7 @@ namespace LibraryApi.Controllers
         [HttpGet]
         public async Task<IEnumerable<MemberDTO>> GetAllMembers()
         {
-            return  _mapper.Map<IEnumerable<MemberDTO>>(await _memberRepository.GetAll());
+            return _mapper.Map<IEnumerable<MemberDTO>>(await _memberRepository.GetAll());
         }
 
         [HttpGet("{memberId:Guid}")]
@@ -63,7 +67,7 @@ namespace LibraryApi.Controllers
         public async Task<ActionResult<MemberDTO>> DeleteMember(Guid memberId)
         {
             var member = await _memberRepository.GetById(memberId);
-            if(member is null) return NotFound();
+            if (member is null) return NotFound();
             await _memberService.Delete(memberId);
             return CustomResult(member);
         }

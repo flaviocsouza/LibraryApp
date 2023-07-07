@@ -1,14 +1,18 @@
 ﻿using AutoMapper;
+using LibraryApi.Controllers;
 using LibraryApi.DTO;
 using LibraryBusiness.Interface.Notificator;
 using LibraryBusiness.Interface.Repository;
 using LibraryBusiness.Interface.Service;
 using LibraryBusiness.Model;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace LibraryApi.Controllers
+namespace LibraryApi.V1.Controllers
 {
-    [Route("[controller]")]
+    [Authorize]
+    [ApiVersion("1.0")]
+    [Route("api/{Version:apiVersion}/[controller]")]
     public class PublisherController : MainController
     {
         private readonly IMapper _mapper;
@@ -16,7 +20,7 @@ namespace LibraryApi.Controllers
         private readonly IPublisherService _publisherService;
 
         public PublisherController(INotificator notificator,
-            IMapper mapper, 
+            IMapper mapper,
             IPublisherRepository publisherRepository,
             IPublisherService publisherService
         ) : base(notificator)
@@ -33,7 +37,7 @@ namespace LibraryApi.Controllers
         }
 
         [HttpGet("{publisherId:Guid}")]
-        public async  Task<ActionResult<PublisherDTO>> GetPublisherByID(Guid publisherId)
+        public async Task<ActionResult<PublisherDTO>> GetPublisherByID(Guid publisherId)
         {
             var publisher = await _publsiherRepository.GetById(publisherId);
             if (publisher is null) return NotFound();
@@ -64,7 +68,7 @@ namespace LibraryApi.Controllers
         {
             var publisher = await _publsiherRepository.GetById(publisherId);
             if (publisher is null) return NotFound();
-            
+
             await _publisherService.Delete(publisherId);
             return CustomResult(_mapper.Map<PublisherDTO>(publisher));
         }
