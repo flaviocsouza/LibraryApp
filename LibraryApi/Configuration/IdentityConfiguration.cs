@@ -9,13 +9,8 @@ namespace LibraryApi.Configuration
 {
     public static class IdentityConfiguration
     {
-        public static IServiceCollection IdentityConfig(this IServiceCollection services)
+        public static IServiceCollection IdentityConfig(this IServiceCollection services, IConfigurationRoot configuration)
         {
-            IConfigurationRoot configuration = new ConfigurationBuilder()
-                .SetBasePath(Directory.GetCurrentDirectory())
-                .AddJsonFile("appsettings.json")
-                .Build();
-
             services.AddDbContext<UserDbContext>(options =>
                 options.UseSqlServer(configuration.GetConnectionString("LibraryConnectionString")));
 

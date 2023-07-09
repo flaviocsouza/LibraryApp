@@ -4,7 +4,6 @@ using LibraryData.LibraryContext;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 var configuration = new ConfigurationBuilder()
@@ -21,6 +20,7 @@ builder.Services.AddApiVersioning(opt =>
     opt.DefaultApiVersion = new ApiVersion(1, 0);
     opt.ReportApiVersions = true;
 });
+
 builder.Services.AddVersionedApiExplorer(opt =>
 {
     opt.GroupNameFormat = "'v'VVV";
@@ -47,7 +47,8 @@ builder.Services.RepositoryInjectionConfig();
 builder.Services.ServiceInjectionConfig();
 builder.Services.NotificationInjectionConfig();
 builder.Services.OtherInjectionConfig();
-builder.Services.IdentityConfig();
+builder.Services.IdentityConfig(configuration);
+builder.Services.AddLoggingConfiguration();
 
 var app = builder.Build();
 
@@ -58,6 +59,7 @@ if (app.Environment.IsDevelopment())
     app.UseCors("Development");
 }
 
+app.UseLoggingConfiguration(configuration);
 app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();

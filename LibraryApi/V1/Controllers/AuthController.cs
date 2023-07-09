@@ -25,8 +25,7 @@ namespace LibraryApi.V1.Controllers
         public AuthController(INotificator notificator,
             SignInManager<IdentityUser> signInManager,
             UserManager<IdentityUser> userManager,
-            IOptions<JWTSettings> jwtSettings
-        ) : base(notificator)
+            IOptions<JWTSettings> jwtSettings) : base(notificator)
         {
             _signInManager = signInManager;
             _userManager = userManager;
@@ -49,7 +48,7 @@ namespace LibraryApi.V1.Controllers
             if (result.Succeeded)
             {
                 await _signInManager.SignInAsync(user, false);
-                return CustomResult(GenerateJWT(registerUser.email));
+                return CustomResult(await GenerateJWT(registerUser.email));
             }
 
             foreach (var error in result.Errors)
@@ -64,7 +63,7 @@ namespace LibraryApi.V1.Controllers
         {
             if (!ModelState.IsValid) return CustomResult(ModelState);
             var result = await _signInManager.PasswordSignInAsync(userDTO.email, userDTO.password, false, true);
-            if (result.Succeeded) return CustomResult(GenerateJWT(userDTO.email));
+            if (result.Succeeded) return CustomResult(await GenerateJWT(userDTO.email));
             if (result.IsLockedOut)
             {
                 Notificate("User is Blocked");
@@ -91,13 +90,16 @@ namespace LibraryApi.V1.Controllers
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
             });
 
+            var writeToken = jwtHandler.WriteToken(token);
+            var claimList = claims.Claims.Select(c => new ClaimDTO { Type = c.Type, Value = c.Value });
+
             return new ResponseAuthenticationDTO
             {
-                JWTValue = jwtHandler.WriteToken(token),
+                JWTValue = writeToken,
                 UserInfo = new UserInfoDTO
                 {
                     EMail = user.Email,
-                    Claims = claims.Claims.Select(c => new ClaimDTO { Type = c.Type, Value = c.Value })
+                    Claims = claimList
                 }
             };
 

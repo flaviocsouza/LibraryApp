@@ -11,7 +11,7 @@ namespace LibraryApi.DTO
         [Required(ErrorMessage = "e-Mail is Required")]
         public string password { get; set; }
 
-        [Compare("Password", ErrorMessage = "The Field Password and Confirmation must be equals")]
+        [Compare("password", ErrorMessage = "The Field Password and Confirmation must be equals")]
         public string passwordConfirm { get; set; }
     }
 
