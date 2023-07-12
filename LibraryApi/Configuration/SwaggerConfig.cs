@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc.ApiExplorer;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;
@@ -71,6 +72,29 @@ namespace LibraryApi.Configuration
                 };
 
                 opt.AddSecurityRequirement(security);
+            });
+
+            services.AddApiVersioning(opt =>
+            {
+                opt.AssumeDefaultVersionWhenUnspecified = true;
+                opt.DefaultApiVersion = new ApiVersion(1, 0);
+                opt.ReportApiVersions = true;
+            });
+
+            services.AddVersionedApiExplorer(opt =>
+            {
+                opt.GroupNameFormat = "'v'VVV";
+                opt.SubstituteApiVersionInUrl = true;
+            });
+
+            services.AddCors(opt =>
+            {
+                opt.AddPolicy("Development", b =>
+                {
+                    b.AllowAnyHeader();
+                    b.AllowAnyMethod();
+                    b.AllowAnyOrigin();
+                });
             });
             return services;
         }

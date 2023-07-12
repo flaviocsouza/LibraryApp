@@ -14,28 +14,6 @@ var configuration = new ConfigurationBuilder()
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerConfiguration();
-builder.Services.AddApiVersioning(opt =>
-{
-    opt.AssumeDefaultVersionWhenUnspecified = true;
-    opt.DefaultApiVersion = new ApiVersion(1, 0);
-    opt.ReportApiVersions = true;
-});
-
-builder.Services.AddVersionedApiExplorer(opt =>
-{
-    opt.GroupNameFormat = "'v'VVV";
-    opt.SubstituteApiVersionInUrl = true;
-});
-
-builder.Services.AddCors(opt => 
-{
-    opt.AddPolicy("Development", b => 
-    {
-        b.AllowAnyHeader();
-        b.AllowAnyMethod();
-        b.AllowAnyOrigin();
-    });
-});
 
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.AddDbContext<LibraryDbContext>(options =>

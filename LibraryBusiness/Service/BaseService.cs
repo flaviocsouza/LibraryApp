@@ -34,6 +34,7 @@ namespace LibraryBusiness.Service
             where TValidador : AbstractValidator<TEntity>
             where TEntity : BaseModel
         {
+            if (entity is null) return true;
             var result =  validator.Validate(entity);
             
             if (result.IsValid) return true;

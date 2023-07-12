@@ -48,8 +48,6 @@ namespace LibraryApi.Configuration
                     };
                 });
 
-
-
             return services;
         }
     }
